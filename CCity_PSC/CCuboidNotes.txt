@@ -1,0 +1,89 @@
+ Cuboid City Notes   Dec 2003
+ 
+ by Robert Rayment
+ 
+ 1. CCBuilder
+ 
+ Scenes are built up from 24 rows x 18 columns squares each of which is 256 x 256 pixels,
+ ie 6144 x 4608 pixels.  A square must be selected before drawing or adjustments can be made.
+ Once selected, the square can be drawn on plan, front, right, back or left face.  To 
+ alter lengths or location of blocks in an RC-square, click the corresponding option button
+ for [ALTER].  The left button will then change lengths and right button move a block.
+ Active blocks are colored red and can be cycled with the [Cycle thru blocks] button or 
+ Ctrl-left click on the small circle attached to each block.  
+ 
+ New:                      Clears all block & waits for new RC-square to be selected.
+ Load:                     Opens & reads a *.ccc file
+ Add:                      Opens & reads a *.ccc file and adds it to any existing drawing.
+                           The first set of blocks read, for an RC-square, is located at the
+                           selected RC-square - the rest, if any, go to where they were made.
+                           This option is mainly intended for use after creating shapes in a 
+                           single RC-square.
+ 
+ Save As:                  Save *.ccc file
+ Copy all in RC-square:    Copies all the blocks in an RC-square
+ Paste all to RC-square:   Pastes all the copied blocks to the select-RC square - note
+                           cannot paste to the same RC-square as was copied from.
+ 
+ 
+ The coordinate system is Y up, X to right & Z into screen.  So when drawing a plan a
+ default height (Y) is needed to make blocks visible on the faces.  Similarly when
+ drawing on a face a default depth is need to show up on the plan.  Note that XOR
+ drawing is done so that where lines coincide exactly they appear invisible - this
+ is not a problem once accepted.  Such lines can still be highlighted but will appear
+ light blue instead of red. No block can have a plan size > 256 x 256 & the maximum 
+ height on a face is 512 pixels.
+ 
+ There is a whole plan screen which shows the progress on all the RC plan squares.
+ Clicking on the whole plan selects an RC-square. Also a perspective view can be shown of
+ any RC-square.
+ 
+ There are some preset shapes for the plan and faces.  On the preset plans there is a
+ maze option, which makes mazes using a standard method.  All the mazes have the same
+ entry point and a pyramid at the destination location.
+ 
+ When done the files are saved as AName.ccc.  For mazes the name must include the letters
+  " maze " for CCAnim to operate the scene as a maze.  Three mazes are included, two
+ easy ones and one hard one.  But you can always generate your own if you want.
+ 
+ Like most drawing progs some practice is needed to get used to it.
+ 
+ All the included examples were drawn with this program.
+ 
+ 2. CCAnim
+ 
+ Compile for speed!
+ 
+ This has a default scene or can be loaded with a *.ccc file.
+ 
+ Controls are:
+ 
+ Speed and direction:      Location of cursor from center of display.
+ Up & Down movement only:  Shift + Cursor
+ Sideways movement only:   Ctrl  + Cursor
+ Change eye level:         Ctrl-Up/Down Arrow
+ Change block heights:     Shift-Up/Down Arrow
+ Back to start screen:     F1 or Right-click.
+ Exit prog:                Esc key.
+ 
+ The Collision count is shown at the top left of the display.  For mazes the aim is to
+ solve it without any collisions and reach the pyramid, which is the same on all mazes.
+ Entry into the maze is also the same for all mazes.  When a maze is loaded CCAnim searches
+ for unique coords at the bottom of the pyramid and notes the block number, since the block
+ number is known at every collision.
+ 
+ Planar projection is used which means the eye moves over a plane rather than full spherical.
+ This is much faster provided mostly integers are used for the code and it is compiled for
+ fast code with the advanced option checked.  Basically the ccc files are transformed into
+ a byte array which is blitted to the display using the StretchDIBits API.  So the byte array
+ is the back buffer.  Some jitter is unavoidable since the transform must locate on pixels.
+ Drawing onto the byte array is done using the Breshenham algorithm. Roll-around scrolling is
+ used so that what moves off one side of the display appears on the opposite side.
+ 
+ This progam can happily deal with several thousand wire-frame blocks but if rendered it would
+ slow down a lot. One of the Polygon APIs with Fill could be used. The best ref I've spotted on
+ PSC is by Tim Talma CodeId=4085.  For speed, however, DirectX or possibly MMX machine code would
+ be needed.
+ 
+ Trebor Tnemyar
+ 
